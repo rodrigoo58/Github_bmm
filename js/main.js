@@ -1,3 +1,31 @@
+// Tema claro/oscuro
+const html = document.documentElement;
+const themeBtn = document.getElementById('theme-toggle');
+
+const applyTheme = (theme) => {
+  if (theme === 'light') {
+    html.setAttribute('data-theme', 'light');
+    themeBtn.setAttribute('aria-label', 'Cambiar a modo oscuro');
+  } else {
+    html.removeAttribute('data-theme');
+    themeBtn.setAttribute('aria-label', 'Cambiar a modo claro');
+  }
+};
+
+themeBtn.addEventListener('click', () => {
+  const isLight = html.getAttribute('data-theme') === 'light';
+  const next = isLight ? 'dark' : 'light';
+  localStorage.setItem('theme', next);
+  applyTheme(next);
+});
+
+// Sincronizar si el usuario cambia la preferencia del sistema
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+  if (!localStorage.getItem('theme')) {
+    applyTheme(e.matches ? 'light' : 'dark');
+  }
+});
+
 // Año actual en el footer
 document.getElementById('year').textContent = new Date().getFullYear();
 
